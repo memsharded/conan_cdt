@@ -8,7 +8,7 @@ class HelloStatlibConan(ConanFile):
     license = "BSD"
     author = "Twoflower2"
     settings = "os", "compiler", "build_type"
-    exports = "inc*"
+    exports_sources = "inc*", "src*", "../workspace*"
     generators = "txt"
 
     def build(self):
@@ -41,15 +41,17 @@ class HelloStatlibConan(ConanFile):
         #
         # ***************************************************************************************
 
-        WORK_SPACE = "../workspace"
-        PROJECT_DIR = "../workspace/hello_statlib"
+        WORK_SPACE = "workspace"
+        PROJECT_DIR = "workspace/hello_statlib"
         PROJECT_NAME = "hello_statlib"
-        BUILD_TYPE = "Debug"
+        BUILD_TYPE = str(self.settings.build_type)
         
-        cmd = "eclipse -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data " + WORK_SPACE + " -import " + PROJECT_DIR + " " + PROJECT_NAME + "/" + BUILD_TYPE
-        self.run("cmd")
+        cmd = ("eclipse -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data "
+               + WORK_SPACE + " -import " + PROJECT_DIR + " -debug")
+        self.run(cmd)
 
     def package(self):
+        # I would recommend "include", "lib"
         self.copy(pattern="*.a", dst="bin", src="bin")
         self.copy(pattern="*.h", dst="inc", src="inc")
 
