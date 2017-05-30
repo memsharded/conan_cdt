@@ -1,4 +1,6 @@
 from conans import ConanFile
+import os
+
 
 class HelloStatlibConan(ConanFile):
     name = "hello_statlib"
@@ -44,18 +46,17 @@ class HelloStatlibConan(ConanFile):
         WORK_SPACE = "workspace"
         PROJECT_NAME = "hello_statlib" #Just set here as explicit example only. This is important as var for build per project_name, because we have up to 42 project_name 's each having a .cproject file
         PROJECT_DIR = "workspace/" + PROJECT_NAME
-        self.settings.build_type = "Debug" #Just set here as explicit example only
         BUILD_TYPE = str(self.settings.build_type)
-        
+        os.makedirs("bin")
         cmd = "eclipse -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild -data " + WORK_SPACE + " -import " + PROJECT_DIR + " -cleanBuild " + PROJECT_NAME + "/" + BUILD_TYPE
-        print("\nBuilding with command line cmd:\n" + cmd)
+        self.output.info("\nBuilding with command line cmd:\n" + cmd)
         self.run(cmd)
-        print("\nBuild Successful")
+        self.output.info("\nBuild Successful")
 
     def package_info(self):
         self.cpp_info.includedirs= ["inc"]
         self.cpp_info.libdirs = ["bin"]
-        self.cpp_info.libs = ["hello"]
+        self.cpp_info.libs = ["hello_statlib"]
 
     def package(self):
         # I would recommend "include", "lib"

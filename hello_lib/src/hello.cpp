@@ -2,5 +2,9 @@
 #include "hello.h"
 
 void hello(){
-	std::cout << "Hello World!\n";
+	#ifdef NDEBUG
+	std::cout << "Hello World Release!\n";
+	#else
+	std::cout << "Hello World Debug!\n";
+	#endif
 }
