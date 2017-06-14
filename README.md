@@ -1,3 +1,43 @@
+# Steps to create package using Eclipse CDT
+
+The package will be created for the library
+
+```bash
+# ensure EclipseCDT is in the path
+$ git clone https://github.com/memsharded/conan_cdt
+$ cd conan_cdt
+$ conan test_package -s build_type=Debug -s compiler=gcc -s compiler.version=4.9 -s compiler.libcxx=libstdc++
+$ conan search
+> Existing package recipes:
+
+hello_statlib/1.0.0@user/testing
+$ conan search hello_statlib/1.0.0@user/testing
+> Existing packages for recipe hello_statlib/1.0.0@user/testing:
+
+    Package_ID: ca93456834c0cf87814b88b9f819760f726370e4
+        [settings]
+            build_type: Debug
+            compiler: gcc
+            compiler.libcxx: libstdc++
+            compiler.version: 4.9
+            os: Windows
+        outdated from recipe: False
+
+$ conan remote add myremote <your-remote-url>
+$ conan upload hello_statlib/1.0.0@user/testing --all -r=myremote
+```
+
+# How to consume the ``hello_statlib/1.0.0@user/testing`` package in the hello_appl
+
+Right now it is not possible, as Eclipse CDT doesn't have a way to automatically define:
+- Include paths, preprocessor directives might be possible
+- Library names not possible
+- Libray paths not possible
+- C/CXX flags not possible
+- Link flags not possible
+
+
+
 # Conan.io "Hello World" work-flow example of using Eclipse CDT
 Conan example of Eclipse CDT projects by running headless Eclipse from the Conan build() method by creating a static library and then using that library in an application.
 
